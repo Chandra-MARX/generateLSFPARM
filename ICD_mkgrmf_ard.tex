@@ -1,0 +1,801 @@
+% Time-stamp: <2001-12-28 13:11:45 dsd> 
+% MIT Directory: ~dsd/CXC/specs/ICD/
+% CfA Directory: /dev/null
+% File: ICD_1DLIB.tex
+% Author: D. Davis
+%
+% (this header is ~dph/libidl/time-stamp-template.el)
+% to auto-update the stamp in emacs, put this in your .emacs file:
+%      (add-hook 'write-file-hooks 'time-stamp)
+%====================================================================
+
+\documentclass[twoside]{article}
+%\documentstyle[11pt]{article}
+\input epsf.sty
+\usepackage[outerbars,dvips]{changebar}
+
+%\usepackage[dvips]{graphics}
+%\usepackage{epsf}
+\textwidth=6.5in
+\textheight=8.9in
+\topmargin=-0.5in
+\oddsidemargin=0in
+\evensidemargin=0in
+
+\newcommand{\putdraft}{\special{!userdict begin /bop-hook{gsave 200 30
+translate 65 rotate /Times-Roman findfont 216 scalefont setfont 0 0
+moveto 0.9 setgray (DRAFT) show grestore}def end}}
+ 
+
+\newcommand{\Remark}[1]{\marginpar
+   {\fbox{\parbox{1.7in}{\raggedright\scriptsize#1}}}}
+
+\newcommand{\Putline}{
+%  \advance\textwidth-26pt
+  \rule{\the\textwidth}{1pt}
+%  \advance\textwidth+26pt
+  }
+\def\nodata{ ~$\cdots$~ }
+\newcommand{\Note}[1]{
+\begin{changemargin}{0.25in}{0in}
+\advance\textwidth-26pt
+\parbox{\textwidth}{      % testing...
+\hfill\Putline\newline
+%\parbox{\textwidth}{\small\sf#1}\\
+{\small\sf#1}\\            % testing...
+\Putline\newline
+}       % testing...
+\advance\textwidth+26pt
+\end{changemargin}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \putstring{x}{y}{angle}{scale}{gray}{string}
+% gray: 0=black, 1=white
+
+\newcommand{\putstring}[6]{
+\special{!userdict begin /bop-hook{gsave #1 #2 translate
+#3 rotate /Times-Roman findfont #4 scalefont setfont
+0 0 moveto #5 setgray (#6) show grestore}def end}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    To change the margins of a document within the document,
+%    modifying the parameters listed on page 163 will not work. They
+%    can only be changed in the preamble of the document, i.e, before
+%    the \begin{document} statement. To adjust the margins within a
+%    document we define an environment which does it:
+      \newenvironment{changemargin}[2]{\begin{list}{}{
+         \setlength{\topsep}{0pt}\setlength{\leftmargin}{0pt}
+         \setlength{\rightmargin}{0pt}
+         \setlength{\listparindent}{\parindent}
+         \setlength{\itemindent}{\parindent}
+         \setlength{\parsep}{0pt plus 1pt}
+         \addtolength{\leftmargin}{#1}\addtolength{\rightmargin}{#2}
+         }\item }{\end{list}}
+%    This environment takes two arguments, and will indent the left
+%    and right margins by their values, respectively. Negative values
+%    will cause the margins to be widened, so
+%    \begin{changemargin}{-1cm}{-1cm} widens the left and right margins
+%    by 1cm.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\Header}[2]{
+\pagestyle{myheadings}                   %%%%%%%%%%
+\markboth{\bf \qquad #1 \hfill #2 \qquad}%%%%%%%%%%
+         {\bf \qquad #1 \hfill #2 \qquad}%%%%%%%%%%
+}
+
+%%%%%%%%%%%%%%%%%%%%%% END dph useful macros %%%%%%%%%%--------------
+
+
+%%%
+%%% Look for occurrences of five pound characters: #####, to locate places
+%%% where updates are necessary
+%%%
+
+%%%
+%%% revision info
+%%%
+\newcommand{\Revision}{\mbox{\em%
+%%%
+%%% ##### Update the revision information
+%%%
+%Revision 0.0---16 Mar 2001 % my first draft, uncirculated
+%Revision 0.1.1---27 Mar 2001 % Format change incorporated
+%Revision 0.1.2---02 May 2001 % Four Columns added
+Revision 0.2.1---28 Dec 2001 % Comments incorperated
+%Revision 1.2.0   15 Dec 1999 % Comments incorperated
+%Revision 1.0---02 Feb 1998 % reviewed, updated.
+}}
+
+
+
+\hyphenation{pipe-line}
+\hyphenation{pipe-lines}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\Header{Data Product Interface Document: /}{\Revision}
+\begin{document}
+
+
+%\putstring{x}{y}{angle}{scale}{gray}{string}
+% gray: 0=black, 1=white
+%\putstring{70}{40}{90}{40}{0.90}{D R A F T -DRAFT- D R A F T}
+%%% ##### comment the following line out for actual releases
+%\putdraft
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%
+%%% title stuff, no need to change anything
+%%%
+
+\begin{titlepage}
+
+\begin{changemargin}{-1in}{-1in}
+
+  \begin{center}
+    {\huge\bf AXAF Science Center}
+
+    \vspace*{0.1in}
+%    \leavevmode{\scalebox{0.17}{\includegraphics{asc_logo.eps}}}
+    {\epsfxsize=3.2cm \leavevmode\epsfbox{asc_logo.eps}}
+    \vspace*{0.1in}
+
+    {\LARGE\bf mkgrmf LSF Input Data:}
+
+    \vspace*{0.1in}
+    {\LARGE\bf Data Product Interface Document:}
+    \vspace*{0.2in}
+
+    \Revision
+
+  \end{center}
+
+  \vfill
+
+  \begin{tabular}{lll}
+    Submitted: & \rule{3.5in}{0.01in} & \rule{0.75in}{0.01in} \\
+    & David S. Davis & Date   \\
+    & Grating Scientist, CXC Science Data Systems & \\[0.25in]
+    Concurred: & \rule{3.5in}{0.01in} & \rule{0.75in}{0.01in} \\
+    & David Huenemoerder & Date   \\
+    & Grating Scientist, CXC Science Data Sytems & \\[0.25in]
+    Concurred: & \rule{3.5in}{0.01in} & \rule{0.75in}{0.01in} \\
+    & Dale Graessle & Date   \\
+    & Chandra CALDB Manager& \\[0.25in]
+    Concurred: & \rule{3.5in}{0.01in} & \rule{0.75in}{0.01in} \\
+    & Arnold Rots & Date   \\
+    & Archive Scientist, CXC Archives & \\[0.25in]
+    Concurred: & \rule{3.5in}{0.01in} & \rule{0.75in}{0.01in} \\
+    & Janet De Ponte & Date   \\
+    & Manager, CXC Data Systems & \\[0.25in]
+    Concurred: & \rule{3.5in}{0.01in} & \rule{0.75in}{0.01in} \\
+    & Martin Elvis & Date   \\
+    & Manager, CXC Science Data Systems & \\[0.25in]
+    Approved:  & \rule{3.5in}{0.01in} & \rule{0.75in}{0.01in} \\
+ \end{tabular}
+
+\end{changemargin}
+
+\end{titlepage}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%
+%%% update info
+%%%
+\pagenumbering{roman}\setcounter{page}{2}
+
+%%%
+%%% ##### update as necessary
+%%%
+
+\begin{center}
+\begin{tabular}{|c|c|c|p{2.5in}|} \hline
+\multicolumn{4}{|c|}{}\\[1mm]
+\multicolumn{4}{|c|}{\bf Document and Change Control Log}\\[3mm]\hline
+{\bf Date} & {\bf Version} & {\bf Section} & {\bf Status} \\ \hline
+19 Mar 01& 0.1.0& all&Initial Draft \\\hline
+23 Apr 01& 0.1.1& all&Format Changes \\\hline
+02 May 01& 0.1.2& all&Four columns added \\\hline
+21 Sep 01& 0.2.0& all&Revised \\\hline
+%04 Feb 99& 1.1.0& all&Revived as a separate document \\\hline
+%30 Apr 99& 1.1.1& 4.1&Added enumerated axis or radial coord\\\hline
+%30 Apr 99& 1.1.1& 4.1&changed TTYPE names\\\hline
+%14 Jun 99& 1.2.0& all&Revised document using comments from DPH,KJG,AR 
+%and JCM\\\hline
+%
+\hline
+%
+\end{tabular}
+\end{center}
+
+\section*{Unresolved Issues}
+
+The following is a list of unresolved, un-reviewed, or un-implemented
+items: 
+
+\begin{enumerate}
+
+\item Defocused data is not yet addressed
+
+\end{enumerate}
+
+\clearpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%
+%%% table of contents, list of tables
+%%%
+
+\tableofcontents
+\clearpage
+\listoftables
+\clearpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pagenumbering{arabic}
+\section{Introduction}
+
+This document describes the interface to be employed in accessing 
+the PSF Library products, according to the requirements stipulated in 
+Applicable Document~\ref{appdoc:se03}.%
+%
+
+\subsection{Purpose}
+
+The purpose of this document is to define the input data for the Line
+Spread Function (generically referring to LSF) Library to be used in
+Level 2 processing for the grating RMF generator (mkgrmf).
+%
+
+\subsection{Scope}
+
+This interface shall apply to all Grating specific LSF
+data products used by the tool {\tt mkgrmf}
+and distributed to the CXC Data
+Archive (see Applicable Documents TBD) during the course of
+the Chandra mission.
+
+\section{Applicable Documents}
+The Applicable Documents required for background and detail on
+grating products are as follows:
+\begin{enumerate}
+%
+\item\label{appdoc:data-prod} 
+  AXAF Data Products Guide\newline
+  {\tt http://hea-www.harvard.edu/asclocal/ds/arch\_doc/EST/DataProd.html}
+%
+\item\label{appdoc:coord}
+ AXAF Coordinate Systems\newline
+    {\tt http://hea-www.harvard.edu/~jcm/asc/coords}
+%
+\item\label{appdoc:se03}
+ ASC AMO-2400 (SE03) \newline
+ ASC Data System Requirements (ASC.302.93.0008)
+%
+\item\label{appdoc:ds01}
+ ASC AMO-2401 (DS01) \newline
+ ASC Data System Software Design (ASC.500.93.0006)
+%
+%
+\item\label{appdoc:fitsstd}
+ HEASARC FITS Standards:\newline
+{\tt http://legacy.gsfc.nasa.gov/docs/heasarc/ofwg/}\newline
+{\tt docs/summary/ogip\_93\_001\_summary.html}
+%
+\item\label{appdoc:ascfits}
+  ASC FITS File Designers' Guide\newline
+  {\tt http://hea-www.harvard.edu/$\sim$arots/asc/fits/ascfits.ps}
+%
+%\item\label{appdoc:fitsdef}
+% NOST 100-1.1, Definition of the Flexible Image Transport System
+%                    (FITS)\newline
+%                    {\tt http://www.cv.nrao.edu/fits/}
+%
+\item\label{appdoc:heasarccaldb}
+  HEASARC FITS CALDB Standards\newline
+  {\tt http://heasarc.gsfc.nasa.gov/docs/heasarc/caldb/caldb\_intro.html}
+%
+\item\label{appdoc:asccaldb}
+  AXAF CALDB Architecture\newline
+  {\tt http://hea-www.harvard.edu/$\sim$arots/asc/fits/caldb.txt}
+%
+\end{enumerate}
+
+% synopsis for editing purposes...
+%
+%   1 appdoc:data-prod AXAF Data Products Guide
+%   2 appdoc:coord     AXAF Coordinate Systems
+%   3 appdoc:se03      ASC AMO-2400 (SE03)
+%   4 appdoc:ds01      ASC AMO-2401 (DS01)
+%   7 appdoc:ascfits   ASC FITS Designers' Guide
+%   5 appdoc:fitsdef   NOST 100-1.1, Definition of the FITS
+%
+%   6 appdoc:fitsstd   HEASARC FITS Standards:
+%   8 appdoc:hrcicd    HRC Data Products Guide:
+%   9 appdoc:acisicd   ACIS Data Products Guide:
+
+
+\section{Functional Description}
+
+\subsection{Data Content Summary}
+
+All Grating LSF Library files shall
+consist of data files conforming to the FITS format (Applicable
+Document~\ref{appdoc:fitsstd}). These files
+contain header keyword entries and binary table (BINTABLE) extensions.
+These files will contain a primary header, possibly null, followed
+by a set of binary tables as described in Applicable
+Document~\ref{appdoc:ascfits}. In addition, these files will conform to the 
+HEASARC CALDB conventions (Applicable Document~\ref{appdoc:heasarccaldb}) and
+have CONTENT, EXTNAME,and HDUCLASS keywords that conform to 
+Applicable Document~\ref{appdoc:asccaldb}.
+
+
+\subsection{Recipients and Utilization}
+
+The primary recipients, via distribution from the archive, of the LSF
+Library are Chandra observers, who will utilize these data products for
+scientific data analysis. The CXC may also make use of specific LSF
+Library data products for instrument calibration, instrument and/or
+spacecraft monitoring and trends analysis, and validation and
+verification of the Level 0, Level 1, and Level 1.5 software and of
+the data products themselves.
+
+\subsection{Pertinent Relationships with Other Interfaces}
+
+Changes to the definition of CXC FITS, as described in Applicable
+Documents~\ref{appdoc:ascfits}, may affect the format of the PSF data
+products described in the current document.
+
+\section{Assumptions and Constraints}
+
+It is assumed that these products are placed into an exportable calibration database
+(CALDB) for users. 
+
+\subsection{Products Not Covered}
+
+PSF products that are used for maintenance and diagnostic purposes
+(those that are not supplied to the user for scientific data
+analysis), or which are generic AXAF Level 2 products, are not
+currently included within the interface defined by this document.
+
+\subsection{Substructure Definition and Format}
+
+The header components for the primary header and all binary table
+extensions are defined and listed in the Applicable Documents. In 
+general, the column or row numbers in the example FITS headers 
+are arbirary unless otherwise indicated. It is the column name and
+its attributes that specify the requirment. Additional columns not
+specified here may be added to the file also long as they do not 
+violate the interface. Software used to process the data can 
+ignore the additional columns, copy them to the output file, or
+optional use them for data processing. Likewise, HDU order is 
+arbitrary, except for the primary HDU which must be first. HDUs
+are intended to be referenced by name, not position. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\section{Access}
+\subsection{Access Tools; Input/Output Protocol}
+
+Since LSF Library products obey the formatting rules described in
+Applicable Documents~\ref{appdoc:ascfits},
+they may be accessed by any software that conforms to those standards,
+including all versions of the FITSIO libraries that support the
+BINTABLE extension. In addition, since they adhere to HEASARC
+standards (Applicable Document~\ref{appdoc:fitsstd}), LSF data product
+files are compatible with the input/output routines that constitute
+the CXC data interface.
+
+%\subsection{Timing and Sequencing Characteristics}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+
+\section{The File Structure for the Grating LSF Data}
+
+This section describes the LSF parameter library which is a FITS file
+containing the LSF fit parameters for the Chandra gratings. Each file
+will contain the parameters for one grating type.
+The * in the table below  denotes the ASC principal HDU.
+
+\begin{table}[h]
+{\footnotesize
+\noindent\begin{tabular}{|llcccccp{1.2in}|}\hline
+HDU
+& \sc HDU Type
+& \sc EXTNAME
+& \sc EXTVER
+& \sc CONTENT
+& \sc HDUCLAS1
+& \sc HDUCLAS3
+& Description
+\\
+\hline
+%
+0 
+& \sc NULL
+& \nodata
+& \nodata
+& \nodata
+& \nodata
+& \nodata
+& \nodata
+\\
+%
+1 (*)
+& \sc BINTABLE
+& \sc MEG
+& 1
+& \sc LSF\_PARAM
+& RESPONSE
+& \sc LSF
+& LSF coefficients
+\\
+%
+\\\hline
+%
+\end{tabular}
+}% close \small
+\caption{File structure for the table with the LSF fit coefficients}
+\label{tab:fstruct}
+\end{table}
+%
+
+\subsection{File Names}
+
+The filename convention shall be
+
+$$\{ det\} \{grat\}\{order\}D \{date\} lsfparmN\{version\}.fits$$
+
+where $\{det\}$ is either $acis$ or $hrcs$, and $\{grat\}$ is one of $leg$, $meg$,
+or $heg$. $\{date\}$ follows the date convention in Applicable
+Document~\ref{appdoc:ascfits}. 
+
+As an example the lsf file for the HRC-S using the LETG grating should 
+be of the form 
+
+hrcsleg1D1999-07-22lsfparmN0000.fits
+
+while the file for the MEG using ACIS-S should be 
+
+acismeg1D1999-07-22lsfparmN0001.fits
+
+\subsection{Column Descriptions}
+
+\begin{table}[h]
+\begin{center}
+{\small
+\begin{tabular}{|c|c|c|c|c|c|p{1.8in}|}
+\hline
+ & & & & & & \\
+ \#
+ & TTYPE
+ & TUNIT
+ & TFORM 
+ & TLMIN
+ & TLMAX
+ & \multicolumn{1}{|c|}{Comment}\\
+ & & & & & & \\\hline
+%
+ 1
+ & NUM\_WIDTHS
+ & 
+ & I
+ & 0
+ & \sc TBD
+ & Number of Extraction Widths \\\hline
+%
+ 2
+ & WIDTH
+ & Degrees
+ & 3E
+ & 0
+ & \sc TBD
+ & Extraction Width \\\hline
+%
+ 3
+ & NUM\_LAMBDAS
+ & 
+ & J
+ & 0
+ & \sc TBD
+ & Number of wavelength points \\\hline
+%
+ 4
+ & TG\_LAM\_LO
+ & Angstroms
+ & nD
+ & $0.0$
+ & \sc TBD
+ & Low wavelength of the extraction region\\\hline
+%
+ 5
+ & TG\_LAM\_HI
+ & Angstroms
+ & nD
+ & $0.0$
+ & \sc TBD
+ & High wavelength of the extraction region\\\hline
+%
+ 6
+ & LAMBDAS
+ & Angstroms
+ & nD
+ & $0.0$
+ & \sc TBD
+ & Input Photon Wavelength \\\hline
+%
+ 7
+ & EE\_FRACS
+ & N/A
+ & mD
+ & $0.0$
+ & $1.0$
+ & Encircled Energy fraction\\\hline
+%
+ 8
+ & GAUSS$i$\_PARMS
+ & N/A
+ & kE
+ & N/A
+ & N/A
+ & vector containing Gaussian parameters\\\hline
+%
+ 9
+ & LORENTZ$i$\_PARMS
+ & N/A
+ & kE
+ & N/A
+ & N/A
+ & vector containing Lorentzian parameters\\\hline
+%
+ 10
+ & THETA\_MIN
+ & degrees
+ & E
+ & 0
+ & N/A
+ & min off-axis angle\\\hline
+%
+ 11
+ & THETA\_MAX
+ & degrees
+ & E
+ & 0
+ & N/A
+ & max off-axis angle for which this is valid\\\hline
+%
+ 12
+ & PHI\_MIN
+ & degrees
+ & E
+ & 0
+ & N/A
+ & min azimuthal angle for which this is valid\\\hline
+%
+ 13
+ & PHI\_MAX
+ & degrees
+ & E
+ & 0
+ & N/A
+ & max azimuthal angle for which this is valid\\\hline
+%
+%
+\end{tabular}
+}% close \small
+\caption{Binary table with the LSF fit coefficients}
+\label{tab:parms}
+\end{center}
+\end{table}%
+The $i$ in parmeters 8 and 9 is currently set to 1 but multiple parameter 
+sets are allowed. So for instance if future fits include a second
+Gaussian component along with the current parameters the lsf file 
+structure supports that as an additional column, e.g. GAUSS2\_PARM. 
+Also n is the number of wavelengths, m is 3$\times$n, and k is 
+3$\times$n$\times$NUM\_WIDTHS. 
+%
+\subsubsection{Comments on the Columns}
+
+The {\tt NUM\_WIDTH} column give the number of widths for which the LSF  
+was extracted and tabulated. In the current incarnation
+this value is three for the MEG and HEG files. For the LETG only one 
+width is currently implemented.  
+
+The {\tt WIDTH} column gives the width, in degrees, of the extraction
+region used to extract the LSF data. The next column gives the
+number of wavelengths at which the LSF is tabluated. Currently these
+must be the same for each extraction width and are assumed to be in
+angstroms.  The columns {\tt TG\_LAM\_LO} and {\tt TG\_LAM\_HI} give
+that lower and upper wavelength of the box that was used to extract
+the LSF data. The {\tt LAMBDA} column gives the wavelength of the peak
+position of the LSF.
+
+The encircled energy fraction is tablulated in the {\tt EE\_FRAC}
+column.  The vector column containing the EE\_FRAC is a
+2-dimensional vector with the ee\_frac for each wavelength as a vector
+and additional rows are for the ee\_frac for each different width as
+defined above. This means that the dimensionality of the vector will
+be num\_lambdas $\times$ num\_widths.
+
+
+%$$ \sum_{j=0}^{num\_widths-1} \sum_{i=0}^{num\_lambdas-1}  
+%{\rm ee\_vector}(i+j) = ee\_frac(i,j)$$
+%
+%Each of the vectors containing the LSF fits parameters are
+%arranged as a matrix and are 3 x NUM\_LAMBDAS x NUM\_WIDTHS.
+%For the Gaussian parameters
+%
+%$$ \sum_{i=0}^{num\_widths-1} \sum_{j=0}^{num\_lambdas-1} \sum_{k=0}^2
+%{\rm Gaussian\_parms\_vector}(i+j+k) = {\rm gauss\_parms}(i,j,k)$$
+%
+
+The columns for the fit parameters shall be a matrix of
+n$\times$j$\times$k where n is the number of parameters and 
+their order is 
+
+\begin{obeylines}
+gauss\_parms(0,j,k) = Gaussian amplitude,
+
+gauss\_parms(1,j,k) = Gaussian $\sigma$ in \AA,
+
+gauss\_parms(2,j,k) = peak position in \AA.
+\end{obeylines}
+
+The number of elements is given by $j$ and the maximum value of $j$ is
+NUM\_LAMBDAS. The number of widths is given by $k$. The function
+parameters at a given j must be for  
+the wavelength range TG\_LAM\_LO(j) and TG\_LAM\_HI(j) and the maximum
+value of $j$ is given by NUM\_WIDTHS. 
+
+%
+%For the Lorentzian parameters
+%
+%$$ \sum_{i=0}^{num\_widths-1} \sum_{j=0}^{num\_lambdas-1} 
+%{\rm \sum_{k=0}^2 Lorentzian\_parms\_vector}(i+j+k) = 
+%{\rm lore\_parms}(i,j,k)$$
+%
+
+For the Lorenzian parameters the order of the parameters in the matrix
+shall be
+
+\begin{obeylines}
+lorentzian\_parms(0,j,k) = Lorentzian amplitude,
+
+lorentzian\_parms(1,j,k) = Lorentzian width in \AA,
+
+lorentzian\_parms(2,j,k) = peak position in \AA,
+\end{obeylines}
+with the other elements obeying the convention for the Gaussian
+parameters above. 
+
+\subsection{Allowed Functional Forms}
+
+The functional forms that are allowed for the LSF in mkgrmf are
+currently a Gaussian and a Lorentzian. 
+
+$$ G(r) = {1. \over (2\pi\sigma^2)} e^{{-(r-r_0)^2\over
+(2\sigma^2)}}$$
+
+where $\sigma$ is the Gaussian width in angstroms and $r_0$ is the
+peak of the LSF. 
+
+
+$$ L(r) = {L_0\over 2\pi} {\Gamma \over (r - r_0)^2 + \Gamma^2)} $$
+where , r$_0$ is the peak position of the Lorenztian, which need not
+be the same as the center of the Gaussian, and $\Gamma$ is the
+half-width of the line profile. 
+
+
+\subsection{Size Estimates}
+
+The ASC primary extension of each file will have 13 columns 
+to describe the LSF parameters at each energy. The vector columns
+are real floating point numbers so the size of the file can be 
+estimated by the number of entries $\times$ 11 (the number of 
+vector columns). So for a typical MEG LSF file with $\sim$2500 entries
+the size of the data area should be 27500 bytes (11$\times$2500). 
+
+\section{FITS Header Templates}
+
+The following header sections have been taken from the ASC 
+FITS file specifications. The example FITS headers given 
+here are examples only, the column numbers, axis numbers, and
+keyword values are {\it not} necessarily those in the LSF data files. 
+
+\subsection{Header Components with No Changes}
+
+\begin{itemize}
+
+\item{Mandatory component for the Image Primary Header (M)}
+
+\item{Mandatory component for Null Primary Header (M)}
+
+\item{Mandatory component for Binary Table extension (M)}
+
+\item{Mandatory component for Image extension (M)}
+
+\item{Full configuration control component (CC)}
+
+\item{Short configuration control component (Short CC)}
+
+\item{Configuration control component for null primary HDU (Null CC)}
+
+\end{itemize}
+
+\subsection{Header Components with Changes}
+
+\subsubsection{Full Timing Component (T)}
+
+\begin{verbatim}
+DATE    = '0000-00-00T00:00:00' / Date and time of file creation
+TIMEUNIT= 's       '           / Time unit
+\end{verbatim}
+
+\subsubsection{Short Timing Component (Short T)}
+
+\begin{verbatim}
+DATE    = '0000-00-00T00:00:00' / Date and time of file creation
+TIMEUNIT= 's       '           / Time unit
+\end{verbatim}
+
+\subsubsection{Full Observation info Component}
+
+\begin{verbatim}
+MISSION = 'AXAF    '           / Mission
+INSTRUME= 'ACIS    '           / Instrument
+DETNAM  = 'ACIS-S  '           / Detector
+GRATING = 'HETG    '           / Grating
+GRATTYP = 'MEG     '           / Grating Type  
+\end{verbatim}
+
+
+
+\subsubsection{Grating Specific Components}
+\begin{verbatim}
+GRATING = 'HETG    '           /Grating in use
+GRATTYP = 'HEG     '           /Grating data
+TG_M    = 1
+ORDER   = 1
+CDTP0001= 'DATA    '           /Virtual data set
+CCLS0001= 'CPF     '           /Basic Calibration file
+CDES0001= 'MEG LSF parameters input for mkgrmf'/Description
+CBD10001= 'GRATING(HETG)'
+CBD20001= 'GRATTYPE(MEG)'
+CBD30001= 'TG_M(1) '
+CBD40001= 'SHELL(0011)'
+CBD50001= 'ORDER(1)'
+CVSD0001= '1999-07-22T00:00:00'
+CVST0001= '00:00:00'
+CCNM0001= 'LSFPARM'
+CBD10001= 'Energy(5)keV'       /Energy range for PSF
+CBD20001= 'THETA(0 - 2)arcmin'     /Distance from optical axis for PSF
+CBD30001= 'PHI(0.0 - 360.)deg'        /Azimuthal angle for PSF
+
+\end{verbatim}
+
+%
+
+\clearpage
+%\section{Focal Plane positions of the LSF}
+
+
+
+
+
+\end{document}
